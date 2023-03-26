@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { listReservations } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import { previous, next, today } from "../utils/date-time";
-import Reservation from "../restauraunts/Reservation";
+import Reservation from "./Reservation";
 import { useHistory } from "react-router";
 
 /**
@@ -16,16 +16,17 @@ function Dashboard({ date }) {
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
 
-  useEffect(loadDashboard, [date]);
-
-  function loadDashboard() {
-    const abortController = new AbortController();
-    setReservationsError(null);
-    listReservations({ date }, abortController.signal)
-      .then(setReservations)
-      .catch(setReservationsError);
-    return () => abortController.abort();
-  }
+  useEffect(() => {
+    function loadDashboard() {
+      const abortController = new AbortController();
+      setReservationsError(null);
+      listReservations({ date }, abortController.signal)
+        .then(setReservations)
+        .catch(setReservationsError);
+      return () => abortController.abort();
+    }
+    loadDashboard();
+  }, [date]);
 
   function nextHelper() {
     const nextDate = next(date);
@@ -52,16 +53,17 @@ function Dashboard({ date }) {
       <div className="d-md-flex mb-3">
         <h4 className="mb-0">Reservations for date</h4>
       </div>
-      <ErrorAlert error={reservationsError} />
-      {/* {JSON.stringify(reservations)} */}
-      {reservations.map((reservation) => (
-        <Reservation reservation={reservation} />
-      ))}
       <div>
         <button onClick={nextHelper}>Next</button>
         <button onClick={previousHelper}>Previous</button>
         <button onClick={todayHelper}>Today</button>
       </div>
+      <ErrorAlert error={reservationsError} />
+      {/* {JSON.stringify(reservations)} */}
+      {reservations.map((reservation) => (
+        <Reservation reservation={reservation} />
+      ))}
+      <br></br>
     </main>
   );
 }

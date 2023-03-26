@@ -114,9 +114,9 @@ function validateTime(req, res, next) {
   // Regex to check valid
   // time in 24-hour format
   let regex = new RegExp(/^([01]\d|2[0-3]):?([0-5]\d)$/);
-
-  //  if str
-  // is empty return false
+  /// US-3 Error 1: reservation_time < 10:30 am
+  /// US-3 Error 2: reservation_time > (9:30pm)
+  /// US=3 Error 3" reservation_time < Date.now()
   if (data.reservation_time === null) {
     return next({
       status: 400,
