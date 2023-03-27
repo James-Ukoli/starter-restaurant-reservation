@@ -108,33 +108,69 @@ function isValidDate(req, res, next) {
   next();
 }
 
-function validateTime(req, res, next) {
-  const { data = {} } = req.body; //18:00 hrs 0> hrs <= 23
-  console.log("reservation_time is", data.reservation_time);
-  // Regex to check valid
-  // time in 24-hour format
-  let regex = new RegExp(/^([01]\d|2[0-3]):?([0-5]\d)$/);
-  /// US-3 Error 1: reservation_time < 10:30 am
-  /// US-3 Error 2: reservation_time > (9:30pm)
-  /// US=3 Error 3" reservation_time < Date.now()
-  if (data.reservation_time === null) {
-    return next({
+function reservationWithinOperatingHours(req,res,next) {
+  const { data = {} } = req.body;
+  let submittedTime =data["reservation_time"].replace(":", "");
+  if (submittedTime < 1030 || submittedTime > 2130) {
+    next({
       status: 400,
-      message: "Please fill in the time for the reservation.",
+      message: "Reservation must be within business hours and at least an hour before close",
     });
   }
-
-  // Return true if the str
-  // matched the ReGex
-  if (regex.test(data.reservation_time) === true) {
-    return next();
-  } else {
-    return next({
-      status: 400,
-      message: "Your time slot for the reservation_time is invalid.",
-    });
-  }
+  next();
 }
+
+function timeValidator(req,res,next) {
+  const { data = {} } = req.body;
+  if (!data["reservation_time"].match(/[0-9]{2}:[0-9]{2}/)) {
+    return next({
+      status: 400,
+      message: `invalid reservation_time `,
+    });
+  }
+  next();
+}
+
+// function validateTime(req, res, next) {
+//   const { data = {} } = req.body; //18:00 hrs 0> hrs <= 23
+//   console.log("reservation_time is", data.reservation_time);
+//   // Regex to check valid
+//   // time in 24-hour format
+//   let regex = new RegExp(/^([01]\d|2[0-3]):?([0-5]\d)$/);
+//   /// US-3 Error 1: reservation_time < 10:30 am
+//   if (data.reservation_time < "10:30") {
+//     return next({
+//       status: 400,
+//       message: "Restauraunt opens at 10:30 a.m." 
+//     })
+//   }
+  
+//   /// US-3 Error 2: reservation_time > 9:30pm
+//   if (data.reservation_time > "21:30") {
+//     return next({
+//       status: 400,
+//       message: "Store closes at 10:30pm. We stop accepting reservations past 9:30pm. Please make a new one :)"
+//     }) 
+//   }
+//   /// US=3 Error 3" reservation_time < Date.now()
+
+//   if (data.reservation_time === null) {
+//     return next({
+//       status: 400,
+//       message: "Please fill in the time for the reservation.",
+//     });
+//   }
+//   // Return true if the str
+//   // matched the ReGex
+//   if (regex.test(data.reservation_time) === true) {
+//     return next();
+//   } else {
+//     return next({
+//       status: 400,
+//       message: "Your time slot for the reservation_time is invalid.",
+//     });
+//   }
+// }
 
 function checkStatus(req, res, next) {
   const { data = {} } = req.body;
@@ -217,7 +253,8 @@ module.exports = {
     has_reservation_time,
     has_people,
     isValidDate,
-    validateTime,
+    timeValidator,
+    reservationWithinOperatingHours,
     isValidNumber,
     checkStatus,
     asyncErrorBoundary(create),
@@ -240,7 +277,8 @@ module.exports = {
     has_reservation_time,
     has_people,
     isValidDate,
-    validateTime,
+    timeValidator,
+    reservationWithinOperatingHours,
     isValidNumber,
     checkStatus,
     hasReservationId,

@@ -58,6 +58,7 @@ function Dashboard({ date }) {
         <button onClick={previousHelper}>Previous</button>
         <button onClick={todayHelper}>Today</button>
       </div>
+     <hr></hr>
       <ErrorAlert error={reservationsError} />
       {/* {JSON.stringify(reservations)} */}
       {reservations.map((reservation) => (
