@@ -25,7 +25,7 @@ function read(Id) {
 function update() {}
 
 function destory(reservationId) {
-  return knex("posts").where({ reservation_id: reservationId }).del();
+  return knex("reservations").where({ reservation_id: reservationId }).del();
 }
 
 module.exports = {

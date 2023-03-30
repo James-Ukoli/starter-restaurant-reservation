@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { createReservation } from "../utils/api";
+import ErrorAlert from "../layout/ErrorAlert";
 
 function CreateReservation() {
   const initialFormState = {
@@ -13,47 +14,33 @@ function CreateReservation() {
     people: "",
   };
   const [formData, setFormData] = useState({ ...initialFormState });
+  const [error, setError] = useState(null);
   const history = useHistory();
 
   const changeHandler = ({ target }) => {
     formData.people = Number(formData.people);
     setFormData({ ...formData, [target.name]: target.value });
-    console.log("changeHandler is working. here is the form data", formData);
   };
 
   const submitHandler = (event) => {
     event.preventDefault();
-    console.log("Submitted:", typeof formData.people);
-    async function addData() {
-      try {
-        await createReservation({ ...formData }); // :or brackets
-        console.log("PEOPLE", formData.people);
-        setFormData(initialFormState);
-      } catch (error) {
-        if (error.name === "AbortError") {
-          // Ignore `AbortError`
-          console.log("Aborted");
-        } else {
-          throw error;
-        }
-      }
-    }
-    addData();
-    history.push(`/dashboard?date=${formData.reservation_date}`);
-
-    //  / saves new reservaton and displays /dashboard page for the date of the new reservation.
-    // / The /dashboard page will list all reservations for one date only.
+    setError(null);
+    createReservation({ ...formData })
+      .then(() => {
+        history.push(`/dashboard?date=${formData.reservation_date}`);
+      })
+      .catch(setError);
   };
 
   const cancelHandler = (event) => {
     ///use history?
     event.preventDefault();
     history.goBack();
-    console.log("canceled, and sent back to the previous Page");
   };
 
   return (
     <>
+      <ErrorAlert error={error} />
       <form onSubmit={submitHandler}>
         <label>First name</label>
         <input
