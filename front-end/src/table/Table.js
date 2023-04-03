@@ -6,7 +6,7 @@ import ErrorAlert from "../layout/ErrorAlert";
 
 function Table() {
   const initialFormState = {
-    table: "",
+    table_name: "",
     capacity: "",
   };
 
@@ -16,7 +16,7 @@ function Table() {
 
   const changeHandler = ({ target }) => {
     formData.capacity = Number(formData.capacity);
-    setFormData({ ...initialFormState, [target.name]: target.value });
+    setFormData({ ...formData, [target.name]: target.value });
   };
 
   const submitHandler = (event) => {
@@ -43,7 +43,7 @@ function Table() {
           key="table"
           name="table_name"
           onChange={changeHandler}
-          value={formData.table}
+          value={formData.table_name}
         />
         <br></br>
         <label>Capacity:</label>

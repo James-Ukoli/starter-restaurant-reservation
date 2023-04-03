@@ -41,7 +41,7 @@ function hasTableId(req, res, next) {
 
 function capacityCheck(req, res, next) {
   const { data = {} } = req.body;
-  if (data.capacity !== 1 || data.capacity !== 6)
+  if (data.capacity < 1)
     return next({
       status: 400,
       message: "Our tables only have a capacity of 1 or 6.",
@@ -51,16 +51,22 @@ function capacityCheck(req, res, next) {
 
 function tableNameCheck(req, res, next) {
   const { data = {} } = req.body;
-  const tableValidNames = new Set(["Bar #1", "Bar #2", "#1", "#2"]);
-  const invalidFields = Object.keys(tableValidNames).filter(
-    (field) => !data.table_name.has(tableValidNames)
-  );
-  if (invalidFields.length > 0) {
+  // const tableValidNames = new Set(["Bar #1", "Bar #2", "#1", "#2"]);
+  // const invalidFields = Object.keys(tableValidNames).filter(
+  //   (field) => !data.table_name.has(tableValidNames)
+  // );
+  // if (invalidFields.length > 0) {
+  //   return next({
+  //     status: 400,
+  //     message: "That is not a valid table_name.",
+  //   });
+  // }
+  if (data.table_name < 2)
     return next({
       status: 400,
-      message: "That is not a valid table_name.",
+      message: `Your table name ${data.table_name} is too short. It must be 2 charatcers long at least`,
     });
-  }
+  next();
 }
 
 async function list(req, res, next) {

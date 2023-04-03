@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { listReservations } from "../utils/api";
+import { listReservations, listTables } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import { previous, next, today } from "../utils/date-time";
 import Reservation from "./Reservation";
 import { useHistory } from "react-router";
+import Table from "./Table";
 
 /**
  * Defines the dashboard page.
@@ -15,6 +16,8 @@ function Dashboard({ date }) {
   const history = useHistory();
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
+  const [tables, setTables] = useState([]);
+  const [tablesError, setTablesError] = useState(null);
 
   useEffect(() => {
     function loadDashboard() {
@@ -27,6 +30,16 @@ function Dashboard({ date }) {
     }
     loadDashboard();
   }, [date]);
+
+  useEffect(() => {
+    function loadTables() {
+      const abortController = new AbortController();
+      setTablesError(null);
+      listTables(abortController.signal).then(setTables).catch(setTablesError);
+      return () => abortController.abort();
+    }
+    loadTables();
+  }, []);
 
   function nextHelper() {
     const nextDate = next(date);
@@ -58,13 +71,23 @@ function Dashboard({ date }) {
         <button onClick={previousHelper}>Previous</button>
         <button onClick={todayHelper}>Today</button>
       </div>
-     <hr></hr>
+      <hr></hr>
       <ErrorAlert error={reservationsError} />
       {/* {JSON.stringify(reservations)} */}
-      {reservations.map((reservation) => (
-        <Reservation reservation={reservation} />
-      ))}
+      <div>
+        <h3 className="border">Reservations</h3>
+        {reservations.map((reservation) => (
+          <Reservation reservation={reservation} />
+        ))}
+      </div>
       <br></br>
+      <ErrorAlert error={tablesError} />
+      <div>
+        <h3 className="border">Tables</h3>
+        {tables.map((table) => (
+          <Table table={table} />
+        ))}
+      </div>
     </main>
   );
 }
