@@ -6,24 +6,17 @@ function list() {
 
 function create(newTable) {
   return knex("tables")
-    .insert(newTable, "*")
-    .then((createdReservation) => createdReservation[0]);
+    .insert(newTable)
+    .returning("*")
+    .then((newTables) => newTables[0]);
 }
 
 function read(tableId) {
   return knex("tables").select("*").where({ table_id: tableId }).first();
 }
 
-function update() {}
-
-function destroy(tableId) {
-  return knex("tables").where({ table_id: tableId }).del();
-}
-
 module.exports = {
   list,
   create,
   read,
-  update,
-  destroy,
 };
