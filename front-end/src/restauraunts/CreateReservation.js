@@ -18,13 +18,14 @@ function CreateReservation() {
   const history = useHistory();
 
   const changeHandler = ({ target }) => {
-    formData.people = Number(formData.people);
     setFormData({ ...formData, [target.name]: target.value });
   };
 
   const submitHandler = (event) => {
+    formData.people = Number(formData.people);
     event.preventDefault();
     setError(null);
+    console.log(typeof formData.people);
     createReservation({ ...formData })
       .then(() => {
         history.push(`/dashboard?date=${formData.reservation_date}`);
@@ -45,6 +46,7 @@ function CreateReservation() {
         <label>First name</label>
         <input
           id="first_name"
+          key="first_name"
           type="text"
           name="first_name"
           onChange={changeHandler}
@@ -54,6 +56,7 @@ function CreateReservation() {
         <label>Last Name</label>
         <input
           id="last_name"
+          key="last_name"
           type="text"
           name="last_name"
           onChange={changeHandler}
@@ -63,6 +66,7 @@ function CreateReservation() {
         <label>Mobile Number</label>
         <input
           id="mobile_number"
+          key="mobile_number"
           type="text"
           name="mobile_number"
           onChange={changeHandler}
@@ -72,6 +76,7 @@ function CreateReservation() {
         <label>Reservation Date</label>
         <input
           id="reservation_date"
+          key="reservation_date"
           placeholder="YYYY-MM-DD"
           pattern="\d{4}-\d{2}-\d{2}"
           type="date"
@@ -83,6 +88,7 @@ function CreateReservation() {
         <label>Reservation Time</label>
         <input
           id="reservation_time"
+          key="reservation_time"
           type="time"
           name="reservation_time"
           placeholder="HH:MM"
@@ -94,6 +100,7 @@ function CreateReservation() {
         <label>Party Size</label>
         <input
           id="people"
+          key="people"
           type="number"
           name="people"
           onChange={changeHandler}

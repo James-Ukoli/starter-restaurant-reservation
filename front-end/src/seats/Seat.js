@@ -73,7 +73,7 @@ function Seat() {
             className="mr-1"
             required
           >
-            <option defaultValue>Select a table</option>
+            {/* <option defaultValue>Select a table</option> */}
             {options}
           </select>
         </label>

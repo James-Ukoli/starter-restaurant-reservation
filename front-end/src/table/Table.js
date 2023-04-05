@@ -15,12 +15,13 @@ function Table() {
   const history = useHistory();
 
   const changeHandler = ({ target }) => {
-    formData.capacity = Number(formData.capacity);
     setFormData({ ...formData, [target.name]: target.value });
   };
 
   const submitHandler = (event) => {
     event.preventDefault();
+    formData.capacity = Number(formData.capacity);
+    console.log(formData);
     createTable({ ...formData })
       .then(() => {
         history.push(`/dashboard`);

@@ -40,6 +40,7 @@ async function list(req, res, next) {
 async function create(req, res) {
   const table = req.body.data;
   const data = await service.create(table);
+  console.log(data);
   res.status(201).json({ data });
 }
 
