@@ -77,7 +77,10 @@ function Dashboard({ date }) {
       <div>
         <h3 className="border">Reservations</h3>
         {reservations.map((reservation) => (
-          <Reservation reservation={reservation} />
+          <Reservation
+            reservation={reservation}
+            key={reservation.reservation_id}
+          />
         ))}
       </div>
       <br></br>
@@ -85,7 +88,7 @@ function Dashboard({ date }) {
       <div>
         <h3 className="border">Tables</h3>
         {tables.map((table) => (
-          <Table table={table} />
+          <Table table={table} key={table.table_id} />
         ))}
       </div>
     </main>

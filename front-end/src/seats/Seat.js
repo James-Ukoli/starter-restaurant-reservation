@@ -10,7 +10,7 @@ function Seat() {
   const history = useHistory();
   const [tables, setTables] = useState([]);
   const [error, setError] = useState(null);
-  const [seatTable, setSeatTable] = useState(null);
+  const [seatTable, setSeatTable] = useState("");
 
   useEffect(() => {
     async function loadTables() {
@@ -50,6 +50,7 @@ function Seat() {
 
   const handleSelectTable = (event) => {
     setSeatTable(event.target.value);
+    console.log("setSeatTable", event.target.value);
   };
 
   const options = tables.map((table) => (
@@ -71,6 +72,7 @@ function Seat() {
             name="table_id"
             onChange={handleSelectTable}
             className="mr-1"
+            value={seatTable}
             required
           >
             {/* <option defaultValue>Select a table</option> */}

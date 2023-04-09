@@ -169,7 +169,7 @@ describe("US-04 - Seat reservation - E2E", () => {
       );
     });
 
-    test.skip("seating reservation at table #1 makes the table occupied", async () => {
+    test("seating reservation at table #1 makes the table occupied", async () => {
       await page.waitForSelector('option:not([value=""])');
 
       await page.screenshot({
@@ -253,7 +253,7 @@ describe("US-04 - Seat reservation - E2E", () => {
       });
 
       const hrefSelector = `[href="/reservations/${reservation.reservation_id}/seat"]`;
-
+      console.log("href selector is:", hrefSelector);
       await page.waitForSelector(hrefSelector);
 
       await page.screenshot({
