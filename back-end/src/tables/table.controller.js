@@ -44,9 +44,20 @@ async function create(req, res) {
   res.status(201).json({ data });
 }
 
+async function updateSeatReservation(req, res) {
+  const { reservation_id } = req.body.data;
+  const table_id = req.params.tableId;
+  const data = await service.updateSeatReservation(reservation_id, table_id);
+  res.json({ data });
+}
+
 module.exports = {
   list: asyncErrorBoundary(list),
   create: [validateFields, asyncErrorBoundary(create)],
+  updateSeatReservation: [
+    validateFields,
+    asyncErrorBoundary(updateSeatReservation),
+  ],
 };
 
 //// eating snack @6:40

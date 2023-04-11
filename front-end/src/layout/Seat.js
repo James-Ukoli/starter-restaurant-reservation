@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { listTables } from "../utils/api";
-import ErrorAlert from "../layout/ErrorAlert";
+import ErrorAlert from "./ErrorAlert";
 import { useParams, useHistory } from "react-router";
 import { seatReservation } from "../utils/api";
 
@@ -30,14 +30,9 @@ function Seat() {
     event.preventDefault();
     const c = new AbortController();
     try {
-      const response = await seatReservation(
-        seatTable,
-        reservation_id,
-        c.signal
-      );
-      if (response) {
-        history.push(`/dashboard`);
-      }
+      console.log("PING");
+      await seatReservation(seatTable, reservation_id, c.signal);
+      history.push(`/dashboard`);
     } catch (error) {
       setError(error);
     }
@@ -57,7 +52,10 @@ function Seat() {
     <option
       key={table.table_id}
       value={table.table_id}
-    >{`${table.table_name} - ${table.capacity}`}</option>
+      disabled={table.capacity < table.occupied}
+    >
+      {table.table_name} - {table.capacity}
+    </option>
   ));
 
   return (

@@ -9,7 +9,10 @@ const methodNotAllowed = require("../errors/methodNotAllowed");
 const controller = require("./table.controller");
 const seatRouter = require("../seats/seat.router");
 
-router.use("/:table_id/seat", seatRouter);
+router
+  .route("/:tableId([0-9]+)/seat")
+  .put(controller.updateSeatReservation)
+  .all(methodNotAllowed);
 
 router.route("/").get(controller.list).post(controller.create);
 
