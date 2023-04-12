@@ -1,9 +1,8 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { listTables } from "../utils/api";
+import { listTables, updateSeatReservation } from "../utils/api";
 import ErrorAlert from "./ErrorAlert";
 import { useParams, useHistory } from "react-router";
-import { seatReservation } from "../utils/api";
 
 function Seat() {
   const { reservation_id } = useParams();
@@ -31,7 +30,7 @@ function Seat() {
     const c = new AbortController();
     try {
       console.log("PING");
-      await seatReservation(seatTable, reservation_id, c.signal);
+      await updateSeatReservation(seatTable, reservation_id, c.signal);
       history.push(`/dashboard`);
     } catch (error) {
       setError(error);
