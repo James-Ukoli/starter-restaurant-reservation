@@ -1,11 +1,22 @@
-const { destroy } = require("../db/connection");
 const knex = require("../db/connection");
 
-function listByDate(date) {
+function listByDate(reservation_date) {
+  reservation_date = new Date(reservation_date).toJSON().substring(0, 10);
   return knex("reservations")
     .select("*")
-    .where({ reservation_date: date })
-    .orderBy("reservations.reservation_time");
+    .where({ reservation_date })
+    .whereNot({ status: "finished" })
+    .whereNot({ status: "cancelled" })
+    .orderBy("reservation_time");
+}
+
+function listByPhone(mobile_number) {
+  return knex("reservations")
+    .whereRaw(
+      "translate(mobile_number, '() -', '') like ?",
+      `%${mobile_number.replace(/\D/g, "")}%`
+    )
+    .orderBy("reservation_date");
 }
 
 function list() {
@@ -22,16 +33,26 @@ function read(Id) {
   return knex("reservations").select("*").where({ reservation_id: Id }).first();
 }
 
-function update() {}
+function update(reservation_id, updatedReservation) {
+  return knex("reservations")
+    .where({ reservation_id })
+    .update({ ...updatedReservation }, "*")
+    .then((result) => result[0]);
+}
 
-function destory(reservationId) {
-  return knex("reservations").where({ reservation_id: reservationId }).del();
+function updateStatus(reservation_id, status) {
+  return knex("reservations")
+    .where({ reservation_id })
+    .update({ status }, "*")
+    .then((result) => result[0]);
 }
 
 module.exports = {
   listByDate,
+  listByPhone,
   list,
   create,
   read,
-  delete: destroy,
+  update,
+  updateStatus,
 };
