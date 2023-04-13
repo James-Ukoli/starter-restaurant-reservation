@@ -2,11 +2,7 @@ const { KnexTimeoutError } = require("knex");
 const knex = require("../db/connection");
 
 function list() {
-  return knex("reservations")
-    .select("*")
-    .whereNot({ status: "finished" })
-    .andWhereNot({ status: "cancelled" })
-    .orderBy("reservation_time");
+  return knex("reservations").select("*").orderBy("reservation_time");
 }
 
 function listByDate(reservation_date) {
