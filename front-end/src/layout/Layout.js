@@ -2,8 +2,6 @@ import React from "react";
 import Menu from "./Menu";
 import Routes from "./Routes";
 
-import "./Layout.css";
-
 /**
  * Defines the main layout of the application.
  *
@@ -11,19 +9,19 @@ import "./Layout.css";
  *
  * @returns {JSX.Element}
  */
-function Layout() {
+const Layout = () => {
   return (
     <div className="container-fluid">
-      <div className="row h-100">
-        <div className="col-md-2 side-bar">
+      <div className="row">
+        <div className="col-md-2 layout__side-nav-color">
           <Menu />
         </div>
-        <div className="col">
+        <div className="col main">
           <Routes />
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default Layout;

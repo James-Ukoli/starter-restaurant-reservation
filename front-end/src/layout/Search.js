@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { listReservations } from "../utils/api";
-import Reservation from "../dashboard/Reservation";
+import Reservations from "../dashboard/Reservations";
 
 const Search = () => {
+  //state variables
   const [showError, setShowError] = useState(false);
   const [reservations, setReservations] = useState(null);
   const [mobile_number, setMobile_number] = useState("");
 
+  //useEffect section
   useEffect(() => {
     if (reservations && reservations.length === 0) {
       setShowError(true);
     }
   }, [reservations]);
 
+  //event and click handlers
   const handleSubmit = (e) => {
     e.preventDefault();
     listReservations({ mobile_number }).then((response) => {
@@ -20,6 +23,7 @@ const Search = () => {
     });
   };
 
+  //main render
   return (
     <div>
       <div>
@@ -55,7 +59,7 @@ const Search = () => {
             {reservations &&
               reservations.map((res) => (
                 <li className="list-group-item" key={res.reservation_id}>
-                  <Reservation reservation={res} />
+                  <Reservations reservation={res} />
                 </li>
               ))}
           </ul>
