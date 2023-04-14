@@ -1,48 +1,64 @@
 import React from "react";
+
 import { Redirect, Route, Switch } from "react-router-dom";
 import Dashboard from "../dashboard/Dashboard";
+import CreateReservation from "../reservations/CreateReservation";
+import CreateTable from "../tables/CreateTable";
+import EditReservation from "../reservations/EditReservation";
+import Seat from "../seats/Seat";
+import Search from "../search/Search";
 import NotFound from "./NotFound";
-import NewReservation from "./NewReservation";
-import NewTable from "./NewTable";
-import Seating from "./Seating";
-import Search from "./Search";
-import EditReservation from "./EditReservation";
+import { today } from "../utils/date-time";
+import useQuery from "../utils/useQuery";
 
-const Routes = () => {
+/**
+ * Defines all the routes for the application.
+ *
+ * @returns {JSX.Element}
+ */
+function Routes() {
+  const query = useQuery();
+  const date = query.get("date");
+
   return (
     <Switch>
       <Route exact={true} path="/">
         <Redirect to={"/dashboard"} />
       </Route>
-      <Route exact path="/reservations">
+
+      <Route exact={true} path="/reservations">
         <Redirect to={"/dashboard"} />
       </Route>
-      <Route exact path="/reservations/new">
-        <NewReservation />
+
+      <Route path="/dashboard">
+        <Dashboard date={date ? date : today()} />
       </Route>
-      <Route path="/reservations/:reservation_id/seat">
-        <Seating />
+
+      <Route path="/reservations/new">
+        <CreateReservation />
       </Route>
+
       <Route path="/reservations/:reservation_id/edit">
         <EditReservation />
       </Route>
+      
+      <Route path="/reservations/:reservation_id/seat">
+        <Seat />
+      </Route>
+
       <Route path="/tables/new">
-        <NewTable />
+        <CreateTable />
       </Route>
-      <Route path="/dashboard">
-        <Dashboard />
-      </Route>
-      <Route path="/dashboard/:date">
-        <Dashboard />
-      </Route>
+
       <Route path="/search">
         <Search />
       </Route>
+
       <Route>
         <NotFound />
       </Route>
     </Switch>
   );
-};
+}
 
 export default Routes;

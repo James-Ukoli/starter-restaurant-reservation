@@ -1,129 +1,93 @@
 import React, { useEffect, useState } from "react";
 import { listReservations, listTables } from "../utils/api";
-import { previous, next, today } from "../utils/date-time";
-import useQuery from "../utils/useQuery";
+import ReservationsList from "../reservations/ReservationsList";
+import TablesList from "../tables/TablesList";
+import DateNavButtons from "./DateNavButtons";
 import ErrorAlert from "../layout/ErrorAlert";
-import Reservations from "./Reservations";
-import Tables from "./Tables";
+import "./Dashboard.css";
 
-const Dashboard = () => {
-  //current date
-  const date = today();
+/**
+ * Defines the dashboard page.
+ * @param date
+ *  the date for which the user wants to view reservations.
+ */
+function Dashboard({ date }) {
+  
+  const [reservations, setReservations] = useState([]);
+  const [reservationsError, setReservationsError] = useState(null);
+  const [tables, setTables] = useState([]);
+  const [tablesError, setTablesError] = useState(null);
 
-  //state variables
-  const [reservations, setReservations] = useState(null);
-  const [tables, setTables] = useState(null);
-  const [viewDate, setViewDate] = useState(date);
-  const [error, setError] = useState(null);
-
-  //useEffect section
+  // Load Dashboard - reservations and tables, remove loading message //
   useEffect(() => {
+    loadReservationsAndTables();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [date]);
+
+  function loadReservations() {
     const abortController = new AbortController();
-    setError(null);
-    if (viewDate === date) {
-      listReservations({ date }, abortController.signal)
-        .then(setReservations)
-        .catch(setError);
-    } else {
-      listReservations({ viewDate }, abortController.signal)
-        .then(setReservations)
-        .catch(setError);
-    }
+    setReservationsError(null);
+    listReservations({ date }, abortController.signal)
+      .then(setReservations)
+      .catch(setReservationsError);
     return () => abortController.abort();
-  }, [date, viewDate]);
+  }
 
-  useEffect(() => {
+  function loadTables() {
     const abortController = new AbortController();
-    setError(null);
-    listTables().then(setTables).catch(setError);
+    setTablesError(null);
+    listTables(abortController.signal)
+      .then(setTables)
+      .catch(setTablesError);
     return () => abortController.abort();
-  }, []);
+  }
 
-  const query = useQuery();
-  const searchedDate = query.get("date");
+  function loadReservationsAndTables() {
+    const abortController = new AbortController();
+    loadReservations();
+    loadTables();
+    return () => abortController.abort();
+  }
 
-  useEffect(() => {
-    if (searchedDate && searchedDate !== "") {
-      setViewDate(searchedDate);
-    }
-  }, [searchedDate]);
 
-  //event and click handlers
-  const handlePreviousDay = (e) => {
-    e.preventDefault();
-    setViewDate(previous(viewDate));
-  };
-  const handleNextDay = (e) => {
-    e.preventDefault();
-    setViewDate(next(viewDate));
-  };
-  const handleTodayDay = (e) => {
-    e.preventDefault();
-    setViewDate(date);
-  };
-
-  //main render
-  if (reservations) {
     return (
-      <main>
-        <div className="dashboard__main-container">
-          <div className="d-flex mb-3 justify-content-center">
-            <h1 className="dashboard__header-text">Dashboard</h1>
-          </div>
+      <main className="dashboard">
+        <h1>Dashboard</h1>
+        <div className="d-md-flex flex-column">
+          {!reservations.length && <h2>No reservations on this date.</h2>}
+        </div>
+        <ErrorAlert error={reservationsError} setError={setReservationsError} />
 
-          <div className="d-flex mb-3 justify-content-around">
-            <button
-              className="dashboard__btn-previous-next"
-              onClick={handlePreviousDay}
-            >
-              Previous Day
-            </button>
-            <button className="dashboard__btn-today" onClick={handleTodayDay}>
-              Today
-            </button>
-            <button
-              className="dashboard__btn-previous-next"
-              onClick={handleNextDay}
-            >
-              Next Day
-            </button>
-          </div>
+        {/* Reservations */}
+        <div className="reservations-list">
+          <h4 className="mb-2">Reservations for {date}</h4>
+          <ReservationsList 
+            reservations={reservations}
+            setReservationsError={setReservationsError}
+            loadReservationsAndTables={loadReservationsAndTables} 
+          />
+        </div>
 
-          <ErrorAlert error={error} />
+        {/* Button Toolbar */}
+        <div className="date-nav">
+          <DateNavButtons currentDate={date} />
+        </div>
 
-          <div className="container">
-            <div className="d-flex mb-3 justify-content-center">
-              <h4 className="dashboard__header-text--date">Date: {viewDate}</h4>
-            </div>
-            <div className="row">
-              {reservations &&
-                reservations.map((res) => (
-                  <div className="col-md-6 mb-3" key={res.reservation_id}>
-                    <Reservations reservation={res} />
-                  </div>
-                ))}
-            </div>
+        {/* Tables */}
+        <div className="tables-list">
+          <div className="d-md-flex mb-3">
+            <h4 className="mb-0">Tables</h4>
           </div>
-
-          <div className="container">
-            <h3 className="d-flex m-3 justify-content-center dashboard__text-sub-header">
-              Tables
-            </h3>
-            <div className="row">
-              {tables &&
-                tables.map((table) => (
-                  <div className="col-md-6 mb-3" key={table.table_id}>
-                    <Tables table={table} />
-                  </div>
-                ))}
-            </div>
-          </div>
+          {!tables && <h5 className="load-message">Loading...</h5>}
+          <ErrorAlert error={tablesError} setError={setTablesError} />
+          <TablesList 
+            tables={tables}
+            setTablesError={setTablesError}
+            loadReservationsAndTables={loadReservationsAndTables} 
+          />
         </div>
       </main>
     );
-  } else {
-    return <div>Loading...</div>;
-  }
-};
+}
 
 export default Dashboard;
