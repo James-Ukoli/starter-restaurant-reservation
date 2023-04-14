@@ -4,7 +4,7 @@ import ReservationsList from "../reservations/ReservationsList";
 import TablesList from "../tables/TablesList";
 import DateNavButtons from "./DateNavButtons";
 import ErrorAlert from "../layout/ErrorAlert";
-import "./Dashboard.css";
+
 
 
 /**
