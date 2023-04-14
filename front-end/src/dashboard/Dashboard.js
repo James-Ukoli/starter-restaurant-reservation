@@ -6,6 +6,7 @@ import DateNavButtons from "./DateNavButtons";
 import ErrorAlert from "../layout/ErrorAlert";
 import "./Dashboard.css";
 
+
 /**
  * Defines the dashboard page.
  * @param date
@@ -57,7 +58,7 @@ function Dashboard({ date }) {
           {!reservations.length && <h2>No reservations on this date.</h2>}
         </div>
         <ErrorAlert error={reservationsError} setError={setReservationsError} />
-
+        
         {/* Reservations */}
         <div className="reservations-list">
           <h4 className="mb-2">Reservations for {date}</h4>

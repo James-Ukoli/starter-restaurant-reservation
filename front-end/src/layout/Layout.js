@@ -9,7 +9,7 @@ import Routes from "./Routes";
  *
  * @returns {JSX.Element}
  */
-const Layout = () => {
+function Layout(){
   return (
     <div className="container-fluid">
       <div className="row">
