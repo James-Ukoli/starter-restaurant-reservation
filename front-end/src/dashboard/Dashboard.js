@@ -44,10 +44,8 @@ function Dashboard({ date }) {
   }
 
   function loadReservationsAndTables() {
-    const abortController = new AbortController();
     loadReservations();
     loadTables();
-    return () => abortController.abort();
   }
 
 

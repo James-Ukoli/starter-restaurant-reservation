@@ -18,8 +18,10 @@ function Seat() {
   // Load tables //
   useEffect(() => {
     async function loadTables() {
-      const response = await listTables();
+      const abortController = new AbortController();
+      const response = await listTables(abortController.signal);
       setTables(response);
+      return () => abortController.abort();
     }
     loadTables();
   }, []);
@@ -27,8 +29,10 @@ function Seat() {
   // Load reservation //
   useEffect(() => {
     async function loadReservation() {
-      const response = await readReservation(reservation_id);
+       const abortController = new AbortController();
+      const response = await readReservation(reservation_id, abortController.signal);
       setReservation(response);
+      return () => abortController.abort();
     }
     loadReservation();
   }, [reservation_id]);
@@ -42,9 +46,11 @@ function Seat() {
   // Submit and send PUT request in order to seat reservation and update table //
   const handleSubmit = (event) => {
     event.preventDefault();
-    updateTable(reservation_id, selectedTable.table_id, selectedTable)
+    const abortController = new AbortController();
+    updateTable(reservation_id, selectedTable.table_id, selectedTable, abortController.signal)
       .then(() => history.push("/dashboard"))
       .catch((error) => setError(error));
+      return () => abortController.abort();
   }
 
 

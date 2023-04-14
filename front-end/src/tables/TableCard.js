@@ -14,13 +14,15 @@ function TableCard({
 
   // Finishes reservation and removes reservation id from table //
   const handleFinish = (event) => {
+    const abortController = new AbortController();
     event.preventDefault();
     const message = "Is this table ready to seat new guests? This cannot be undone.";
     if (window.confirm(message)) {
-      removeReservation(table_id)
+      removeReservation(table_id, abortController.signal)
         .then(() => loadReservationsAndTables())
         .catch(setTablesError);
     }
+    return () => abortController.abort();
   }
 
 

@@ -15,8 +15,10 @@ function EditReservation() {
   // Load reservation by id //
   useEffect(() => {
     async function loadReservation() {
-      const response = await readReservation(reservation_id);
+      const abortController = new AbortController();
+      const response = await readReservation(reservation_id, abortController.signal);
       setReservation(response);
+      return () => abortController.abort();
     }
     loadReservation();
   }, [reservation_id]);
