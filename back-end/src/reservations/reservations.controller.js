@@ -60,14 +60,21 @@ function validStatus(req, res, next) {
 
 function hasMobileNumber(req, res, next) {
   const phone = req.body.data.mobile_number;
-  if (phone) {
-    return next();
-  }
-  next({
-    status: 400,
-    message: "mobile_number property required.",
-  });
+  if (!phone) {
+   return next({
+      status: 400,
+      message: "mobile_number property required.",
+    });
+  } else if (!/^[0-9 -]+$/.test(phone)) {
+    return next({
+      status: 400,
+      message: "Phone number should contain only numbers",
+    });
+  } 
+  next()
 }
+
+
 
 function hasReservationDate(req, res, next) {
   const date = req.body.data.reservation_date;
