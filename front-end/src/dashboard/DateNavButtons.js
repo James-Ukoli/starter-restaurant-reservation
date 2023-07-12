@@ -9,41 +9,39 @@ function DateNavButtons({ currentDate }) {
   const handlePrevious = (event) => {
     event.preventDefault();
     history.push(`/dashboard?date=${previous(currentDate)}`);
-  }
-  
+  };
+
   const handleToday = (event) => {
     event.preventDefault();
     history.push(`/dashboard?date=${today()}`);
-  }
+  };
 
   const handleNext = (event) => {
     event.preventDefault();
     history.push(`/dashboard?date=${next(currentDate)}`);
-  }
-
+  };
 
   return (
-    <div className="btn-toolbar" role="toolbar" aria-label="Toolbar with button">
-     <div className="btn-group" role="group">
-      <button 
-        type="button" 
-        className="btn btn-primary"
-        onClick={handlePrevious}>
+    <div
+      className="btn-toolbar"
+      role="toolbar"
+      aria-label="Toolbar with button"
+    >
+      <div className="btn-group" role="group">
+        <button
+          type="button"
+          className="btn btn-primary"
+          onClick={handlePrevious}
+        >
           Previous
-      </button>
-      <button 
-        type="button" 
-        className="btn btn-danger"
-        onClick={handleToday}>
+        </button>
+        <button type="button" className="btn btn-danger" onClick={handleToday}>
           Today
-      </button>
-      <button 
-        type="button" 
-        className="btn btn-warning"
-        onClick={handleNext}>
+        </button>
+        <button type="button" className="btn btn-success" onClick={handleNext}>
           Next
-      </button>
-     </div>
+        </button>
+      </div>
     </div>
   );
 }

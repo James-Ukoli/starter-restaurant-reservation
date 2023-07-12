@@ -7,8 +7,14 @@
     background-color: #1F2A38;
 }
 
+.center {
+    display: flex;
+    justify-content: center;
+}
+
 @media (max-width: 50em) {
     #mobileSearchBox {
         min-width: 100%;
     }
 }
+

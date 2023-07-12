@@ -14,7 +14,7 @@ function Search() {
   // Change handler //
   const handleChange = ({ target }) => {
     setMobileNumber(target.value);
-  }
+  };
   // Handle find //
   const handleFind = (event) => {
     event.preventDefault();
@@ -26,45 +26,45 @@ function Search() {
       .catch((error) => setError(error));
 
     return () => abortController.abort();
-  }
+  };
 
   return (
     <main>
       <div className="d-md-flex mb-3 justify-content-start">
-        <h1>Reservation Search</h1>
+        <h1 className="center">Reservation Search</h1>
         <ErrorAlert error={error} setError={setError} />
       </div>
 
-    {/* Search Box */}
+      {/* Search Box */}
       <div className="input-group mb-3" id="mobileSearchBox">
-        <input 
-          type="text" 
+        <input
+          type="text"
           name="mobile_number"
-          className="form-control" 
+          className="form-control"
           onChange={handleChange}
           value={mobile_number}
-          placeholder="Enter a customer's phone number" 
-          aria-label="Enter a customer's phone number" 
-          aria-describedby="button-addon2" 
+          placeholder="Enter a customer's phone number"
+          aria-label="Enter a customer's phone number"
+          aria-describedby="button-addon2"
         />
-        <button 
-          className="btn" 
-          type="submit" 
+        <button
+          className="btn"
+          type="submit"
           id="button-addon2"
-          onClick={handleFind}>
-            Find
+          onClick={handleFind}
+        >
+          Find
         </button>
       </div>
 
-    {/* Reservations - displays "No reservations found" if length is zero */}
-    <div className="reservationsList">
-      {reservations.length ? 
-        <ReservationsList reservations={reservations} />
-        :
-        <h3>{reservationMessage}</h3>
-      }
-    </div>
-
+      {/* Reservations - displays "No reservations found" if length is zero */}
+      <div className="reservationsList">
+        {reservations.length ? (
+          <ReservationsList reservations={reservations} />
+        ) : (
+          <h3>{reservationMessage}</h3>
+        )}
+      </div>
     </main>
   );
 }

@@ -8,6 +8,7 @@
         flex-direction: column;
         justify-content: space-evenly;
         list-style: none;
+        align-items: center;
     
     }
 
@@ -16,6 +17,17 @@
     display: flex;
     justify-content: center;
     font-style: italic;
+   }
+
+    @media  (max-width: 767px) {
+        nav div ul {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            list-style: none;
+            align-items: center;
+          
+        }
    }
   
    

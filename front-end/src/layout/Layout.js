@@ -20,7 +20,7 @@ function Layout() {
           <Menu />
         </div>
         <div className="col main">
-          <div className="bg-warning">
+          <div className="bg-warning text-white">
             <Routes />
           </div>
           <TableTypeAvailability />

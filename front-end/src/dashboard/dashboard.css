@@ -8,6 +8,10 @@ h2 {
   text-align: right;
 }
 
+.center {
+  display: flex;
+  justify-content: center;
+}
 
 /* Reservation Cards */
 
