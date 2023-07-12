@@ -1,6 +1,8 @@
 import React from "react";
-import Menu from "./Menu";
 import Routes from "./Routes";
+import Menu from "./Menu";
+import Header from "./Header";
+import TableTypeAvailability from "./TableTypeAvailability";
 
 /**
  * Defines the main layout of the application.
@@ -9,19 +11,23 @@ import Routes from "./Routes";
  *
  * @returns {JSX.Element}
  */
-function Layout(){
+function Layout() {
   return (
-    <div className="container-fluid">
+    <div className="bg-light">
+      <Header />
       <div className="row">
-        <div className="col-md-2 layout__side-nav-color">
+        <div className="bg-light col-md-2">
           <Menu />
         </div>
         <div className="col main">
-          <Routes />
+          <div className="bg-warning">
+            <Routes />
+          </div>
+          <TableTypeAvailability />
         </div>
       </div>
     </div>
   );
-};
+}
 
 export default Layout;

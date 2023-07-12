@@ -1,23 +1,21 @@
+
+   
 /* Nav bar styling for portrait view */
-@media (max-width: 45em) {
-    .sidebar-brand-text {
-        font-size: 1.5em;
-    }
 
-    #accordionSidebar {
-        justify-content: space-around;
-    }
 
-    .navbar-nav {
+    nav div ul {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
+        justify-content: space-evenly;
+        list-style: none;
+    
     }
 
-    .nav-item {
-        padding: 2px 8.5px;
-    }
-
-    .navbar-nav .nav-link {
-        padding: 2px
-    }
-}
+   .orange {
+    color: orange;
+    display: flex;
+    justify-content: center;
+    font-style: italic;
+   }
+  
+   

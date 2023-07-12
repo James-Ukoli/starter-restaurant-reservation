@@ -10,19 +10,13 @@ import "./Menu.css";
 
 function Menu() {
   return (
-    <nav className="navbar navbar-danger align-items-start p-0">
-      <div className="container-fluid d-flex flex-column p-0">
-        <Link
-          className="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0"
-          to="/"
-        >
-          <div className="sidebar-brand-text mx-3">
-            <span className="btn btn-primary">Periodic Tables</span>
-          </div>
-        </Link>
-        <hr className="sidebar-divider my-0" />
-        <ul className="nav navbar-nav text-light" id="accordionSidebar">
-          <li className="nav-item">
+    <nav className="navbar">
+      <div className="d-flex flex-column">
+        <ul className="text-light" id="accordionSidebar">
+          <li>
+            <p className="orange"> Olivia's</p>
+          </li>
+          <li className="">
             <Link className="nav-link" to="/dashboard">
               <span className="oi oi-dashboard" />
               &nbsp;Dashboard
